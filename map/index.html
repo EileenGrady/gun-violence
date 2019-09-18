@@ -119,8 +119,10 @@
           <h3>About this map</h3>
           <p>From 2014 to 2017 there were 134,280 violent gun incidents in the US that resulted in at least one injury
             or death.</p>
-          <p>According to <a href="https://www.npr.org/sections/goatsandsoda/2019/08/05/743579605/how-the-u-s-compares-to-other-countries-in-deaths-from-gun-violence" target="_blank">
-            NPR</a>, "the United States has the 28th-highest rate of deaths from gun violence in the world:
+          <p>According to <a
+              href="https://www.npr.org/sections/goatsandsoda/2019/08/05/743579605/how-the-u-s-compares-to-other-countries-in-deaths-from-gun-violence"
+              target="_blank">
+              NPR</a>, "the United States has the 28th-highest rate of deaths from gun violence in the world:
             4.43 deaths per 100,000 people in 2017 — far greater than what is seen in other wealthy countries."</p>
           <p>This map is aggregated by congressional district. Click any district to see its representative, and follow
             a link to their webpage to explore their stance on gun control or contact them about the issues.</p>
@@ -131,10 +133,11 @@
     <footer class="row text-white py-3">
       <div class="col mx-2">
         <ul class="list-unstyled">
-          <li>Map authored by <a href="https://eileengrady.github.io/" target= "_blank">Eileen Grady</a></li>
+          <li>Map authored by <a href="https://eileengrady.github.io/" target="_blank">Eileen Grady</a></li>
           <li>September 2019</li>
-          <li>Data Source: <a href="https://www.gunviolencearchive.org/" target= "_blank">Gun Violence Archive</a>,
-            web scraped by <a href="https://github.com/jamesqo/gun-violence-data" target= "_blank">Gun Violence Data.</li>
+          <li>Data Source: <a href="https://www.gunviolencearchive.org/" target="_blank">Gun Violence Archive</a>,
+            web scraped by <a href="https://github.com/jamesqo/gun-violence-data" target="_blank">Gun Violence Data.
+          </li>
         </ul>
       </div>
     </footer>
@@ -157,7 +160,6 @@
 
 
   <script>
-
     // set initial map options
     var options = {
       center: [37.905150, -95.799698],
@@ -175,10 +177,10 @@
     }).addTo(map);
 
 
-    $.getJSON("data/congress_clean.json", function(data) {
+    $.getJSON("data/congress_clean_dp_10.json", function (data) {
       //data loaded using AJAX is only accessible within this function scope
       var dataLayer = L.geoJson(data, { //map geojson data using leaflet method within the AJAX function scope
-        style: function(feature) { //apply style to overide leaflet defaults
+        style: function (feature) { //apply style to overide leaflet defaults
           return {
             color: '#FEF6F1',
             weight: .5,
@@ -186,48 +188,52 @@
             fillColor: '#1f78b4'
           };
         },
-        onEachFeature: function(feature,layer) {
+        onEachFeature: function (feature, layer) {
           var props = feature.properties
-          var popup = "<h3>" + props['NAME'] + "</h3> <p>From 2014-2017, there were <span style = 'font-weight: bold'>"
-          + props['num_killed'] + "</span> deaths in <span style = 'font-weight: bold'>" + props['incident_count']
-          + "</span> violent gun incidents, with an additional <span style = 'font-weight: bold'>" + props['num_injured']
-          +"</span> injuries.</p> <p>Contact your representative: " + "<a href = ' " + props['url'] + " ' target = '_blank'>"
-          + props['full_name'] + "</a>, " + props['phone'] + "</p>";
+          var popup = "<h3>" + props['NAME'] +
+            "</h3> <p>From 2014-2017, there were <span style = 'font-weight: bold'>" +
+            props['num_killed'] + "</span> deaths in <span style = 'font-weight: bold'>" + props[
+              'incident_count'] +
+            "</span> violent gun incidents, with an additional <span style = 'font-weight: bold'>" + props[
+              'num_injured'] +
+            "</span> injuries.</p> <p>Contact your representative: " + "<a href = ' " + props['url'] +
+            " ' target = '_blank'>" +
+            props['full_name'] + "</a>, " + props['phone'] + "</p>";
           layer.bindPopup(popup);
 
           // when mousing over a layer
-					layer.on('mouseover', function() {
+          layer.on('mouseover', function () {
 
-						// change the stroke color and width, bring that element to the front
-						layer.setStyle({
-							color: '#7B7B7B',
-							weight: 1.5
-						}).bringToFront();
-					});
+            // change the stroke color and width, bring that element to the front
+            layer.setStyle({
+              color: '#7B7B7B',
+              weight: 1.5
+            }).bringToFront();
+          });
 
-					// on mousing off layer
-					layer.on('mouseout', function() {
+          // on mousing off layer
+          layer.on('mouseout', function () {
 
-						// reset the layer style to its original stroke color and width
-						layer.setStyle({
-							color: '#FEEFE8',
-							weight: .5
-						});
-					});
+            // reset the layer style to its original stroke color and width
+            layer.setStyle({
+              color: '#FEEFE8',
+              weight: .5
+            });
+          });
         }
       }).addTo(map);
 
       drawMap(dataLayer);
-})
+    })
 
     function drawMap(dataLayer) {
 
       var breaks = getClassBreaks(dataLayer);
 
-      dataLayer.eachLayer(function(layer) {
+      dataLayer.eachLayer(function (layer) {
 
         //eachLayer method loops through features and sets fill color based on getColor function
-        dataLayer.eachLayer(function(layer) {
+        dataLayer.eachLayer(function (layer) {
           var props = layer.feature.properties;
           layer.setStyle({
             fillColor: getColor(props[symbolValue], breaks)
@@ -240,16 +246,20 @@
     function getClassBreaks(dataLayer) {
       var values = []; //empty array to hold clusters
 
-      dataLayer.eachLayer(function(layer) { //loop through each county
+      dataLayer.eachLayer(function (layer) { //loop through each county
         var props = layer.feature.properties;
         var value = props[symbolValue];
         // var value = layer.feature.properties
         values.push(value);
       });
-      var clusters = ss.ckmeans(values, 7); //determine similar clusters using simple stats library, returns a 2D array, each array containing another array of clustered values
+      var clusters = ss.ckmeans(values,
+        7
+      ); //determine similar clusters using simple stats library, returns a 2D array, each array containing another array of clustered values
       //use .map method which creates an array by calling function on each item in the clusters array
-      var breaks = clusters.map(function(cluster) {
-        return [cluster[0], cluster.pop()]; //returns the first value in each array, and uses .pop method which also returns last value in each array
+      var breaks = clusters.map(function (cluster) {
+        return [cluster[0], cluster
+          .pop()
+        ]; //returns the first value in each array, and uses .pop method which also returns last value in each array
       });
       return breaks; //result is a 2D array, containing the first and last values for each cluster
       console.log(breaks);
@@ -272,7 +282,7 @@
         return '#cb181d'
       } else if (d <= breaks[6][1]) {
         return '#99000d'
-        }
+      }
     };
 
     function drawLegend(breaks) {
@@ -283,7 +293,7 @@
       });
 
       //anonymous function that happens when legend is added
-      legend.onAdd = function() {
+      legend.onAdd = function () {
 
         //create new <div> HTML element, with class name of 'legend'
         var div = L.DomUtil.create('div', 'legend');
@@ -309,8 +319,6 @@
       };
       legend.addTo(map);
     };
-
-
   </script>
 </body>
 
