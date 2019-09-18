@@ -2,9 +2,9 @@
 
 This project was completed for the final project of MAP 674, Spatial Data Analysis and Visualization, as part of the New Maps Plus program.
 
-The goal of this project is to use pandas and GeoPandas to explore and clean a dataset on gun violence, ultimately resulting in a clean dataset that can be pulled into a webmap.
+The goal of this project is to use pandas and GeoPandas to explore and clean a dataset within a Jupyter notebook, ultimately resulting in a clean dataset that can be pulled into a webmap. Find the notebook and initial data in the 'notebooks' directory.
 
-The resultant webmap shows violent gun incidents aggregated by congressional district, with a popup linking to the webpage of each district's representative where you can explore their stance on gun control or contact them about the issues.
+The resultant webmap shows violent gun incidents aggregated by congressional district, with a popup linking to the webpage of each district's representative where you can explore their stance on gun control or contact them about the issues. Find the mapped data and index.html file in the 'map' directory.
 
 datasource: The CSV file obtained for this project was retrieved from [Gun Violence Data](https://github.com/jamesqo/gun-violence-data), an accessible database compiled through webscraping of [Gun Violence Archive](https://www.gunviolencearchive.org/). Gun Violence Archive is a non-profit research organization that documents gun incidents and crimes.
 
